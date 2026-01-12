@@ -1,67 +1,47 @@
 import 'package:flutter/material.dart';
-import 'main_screen.dart' show MainScreen;
+import '../theme/app_colors.dart';
+import 'home_page.dart';
+import 'quests_page.dart';
+import 'inventory_page.dart';
+import 'fight_page.dart';
+import 'training_page.dart';
 
+// --- 2. STRUCTURE PRINCIPALE (NAVIGATION) ---
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
-// --- 1. PAGE DE LOGIN ---
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
 
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 2; // Commence au Main Menu (Index 2)
+
+  final List<Widget> _pages = [
+    const QuestsPage(),
+    const InventoryPage(),
+    const HomePage(),
+    const FightPage(),
+    const TrainingPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("LEVELER", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 2)),
-              const Spacer(),
-              // Placeholder pour l'image du chevalier
-              Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle),
-                child: const Icon(Icons.person_4, size: 100, color: Colors.grey),
-              ),
-              const Spacer(),
-              _buildSocialButton(Icons.g_mobiledata, "Continue with Google"),
-              const SizedBox(height: 12),
-              _buildSocialButton(Icons.facebook, "Continue with Facebook"),
-              const SizedBox(height: 12),
-              _buildSocialButton(Icons.apple, "Continue with Apple"),
-              const Spacer(),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF5E548E), foregroundColor: Colors.white),
-                onPressed: () {
-                  // Navigation vers le menu principal
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
-                },
-                child: const Text("ENTER THE DUNGEON (DEMO)"),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  Widget _buildSocialButton(IconData icon, String text) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon),
-          const SizedBox(width: 10),
-          Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed, // Nécessaire pour 5 items
+        backgroundColor: Colors.grey[200],
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Quests'),
+          BottomNavigationBarItem(icon: Icon(Icons.backpack), label: 'Inventory'),
+          BottomNavigationBarItem(icon: Icon(Icons.circle_outlined), label: 'Main Menu'), //
+          BottomNavigationBarItem(icon: Icon(Icons.sports_martial_arts), label: 'Fight'),
+          BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Training'),
         ],
       ),
     );

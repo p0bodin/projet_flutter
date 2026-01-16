@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'exercise_page.dart';
-import '../services/activity_storage.dart';
+import '../services/activities_storage.dart';
 
 
 class ExerciseDetailPage extends StatefulWidget {

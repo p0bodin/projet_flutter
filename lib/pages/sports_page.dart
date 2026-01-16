@@ -1,68 +1,84 @@
 import 'package:flutter/material.dart';
-import 'main_screen.dart' show MainScreen;
+import 'exercise_detail_page.dart';
 
-
-// --- 1. PAGE DE LOGIN ---
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
+// --- SPORTS PAGE ---
+class SportsPage extends StatelessWidget {
+  const SportsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("LEVELER", style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 2)),
-              const Spacer(),
-              // Placeholder pour l'image du chevalier
-              Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(color: Colors.grey[300], shape: BoxShape.circle),
-                child: const Icon(Icons.person_4, size: 100, color: Colors.grey),
-              ),
-              const Spacer(),
-              _buildSocialButton(Icons.g_mobiledata, "Continue with Google"),
-              const SizedBox(height: 12),
-              _buildSocialButton(Icons.facebook, "Continue with Facebook"),
-              const SizedBox(height: 12),
-              _buildSocialButton(Icons.apple, "Continue with Apple"),
-              const Spacer(),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF5E548E), foregroundColor: Colors.white),
-                onPressed: () {
-                  // Navigation vers le menu principal
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MainScreen()));
-                },
-                child: const Text("ENTER THE DUNGEON (DEMO)"),
-              )
-            ],
+      appBar: AppBar(title: const Text("Sports Team"), backgroundColor: Colors.transparent),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          _buildSportTile(
+            context,
+            "Basketball",
+            Icons.sports_basketball,
+            "https://images.unsplash.com/photo-1546519638-68e109498ee2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
           ),
-        ),
+          _buildSportTile(
+            context,
+            "Football",
+            Icons.sports_soccer,
+            "https://images.unsplash.com/photo-1579952363873-27f3bde9be2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+          _buildSportTile(
+            context,
+            "Tennis",
+            Icons.sports_tennis,
+            "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+          _buildSportTile(
+            context,
+            "Volleyball",
+            Icons.sports_volleyball,
+            "https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+          _buildSportTile(
+            context,
+            "Ping-Pong",
+            Icons.sports_tennis,
+            "https://images.unsplash.com/photo-1565895917534-1f1282141cd8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+          _buildSportTile(
+            context,
+            "Badminton",
+            Icons.sports_tennis,
+            "https://images.unsplash.com/photo-1554224311-beee415c201f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+          _buildSportTile(
+            context,
+            "Rugby",
+            Icons.sports_football,
+            "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+          ),
+        ],
       ),
     );
   }
 
-
-  Widget _buildSocialButton(IconData icon, String text) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade400),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon),
-          const SizedBox(width: 10),
-          Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
+  Widget _buildSportTile(BuildContext context, String name, IconData icon, String imageUrl) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      color: const Color(0xFFDEE2E6),
+      child: ListTile(
+        leading: Icon(icon, size: 40, color: const Color(0xFF5E548E)),
+        title: Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        subtitle: const Text("Log your game time"),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ExerciseDetailPage(
+                exerciseTitle: name,
+                imageUrl: imageUrl,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

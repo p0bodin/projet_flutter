@@ -51,9 +51,14 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     flex: 6,
                     child: Center(
-                      child: Image.network(
-                        'https://via.placeholder.com/200x300.png?text=Knight+Avatar', // Image temporaire
-                        fit: BoxFit.cover,
+                      child: Container(
+                        width: 150,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(Icons.person, size: 80, color: Colors.grey),
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'exercise_page.dart';
 import '../services/activities_storage.dart';
+import '../services/current_exercise_service.dart';
 
 
 class ExerciseDetailPage extends StatefulWidget {
@@ -69,18 +70,18 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
   }
 
 
-  void _validateAndReset() {
-    // Save activity to history
+  void _validateAndReset() async {
+    // Save only as current exercise for home page (not to history yet)
     if (_isBallSport()) {
       // Sports activity
-      ActivityStorage.saveActivity(
+      await CurrentExerciseService.saveCurrentExercise(
         exercise: widget.exerciseTitle,
         intensity: _intensity.toInt(),
         trainingTime: _timeController.text.isNotEmpty ? "${_timeController.text} hours" : "N/A",
       );
     } else {
       // Exercise activity
-      ActivityStorage.saveActivity(
+      await CurrentExerciseService.saveCurrentExercise(
         exercise: widget.exerciseTitle,
         series: _seriesController.text.isNotEmpty ? int.tryParse(_seriesController.text) : null,
         reps: _repsController.text.isNotEmpty ? int.tryParse(_repsController.text) : null,
@@ -90,7 +91,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Data Validated! Activity saved to history!"),
+        content: Text("Data Validated! Exercise added to Current Exercise."),
         duration: Duration(seconds: 1),
       ),
     );

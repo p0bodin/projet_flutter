@@ -8,10 +8,14 @@ void main() {
 }
 
 
-class LevelerApp extends StatelessWidget {
+class LevelerApp extends StatefulWidget {
   const LevelerApp({super.key});
 
+  @override
+  State<LevelerApp> createState() => _LevelerAppState();
+}
 
+class _LevelerAppState extends State<LevelerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

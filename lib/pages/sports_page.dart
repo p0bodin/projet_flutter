@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'exercise_detail_page.dart';
 
 // --- SPORTS PAGE ---
-class SportsPage extends StatelessWidget {
+class SportsPage extends StatefulWidget {
   const SportsPage({super.key});
 
+  @override
+  State<SportsPage> createState() => _SportsPageState();
+}
+
+class _SportsPageState extends State<SportsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

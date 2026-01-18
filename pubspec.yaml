@@ -10,6 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.15
+  flutter_reactive_ble: ^5.4.0
+  permission_handler: 12.0.1
+  flutter_blue_plus: ^1.31.8
+  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:

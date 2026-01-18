@@ -3,10 +3,14 @@ import 'main_screen.dart' show MainScreen;
 
 
 // --- 1. PAGE DE LOGIN ---
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

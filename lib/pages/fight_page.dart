@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 
 
 // --- FIGHT PAGE ---
-class FightPage extends StatelessWidget {
+class FightPage extends StatefulWidget {
   const FightPage({super.key});
+
+  @override
+  State<FightPage> createState() => _FightPageState();
+}
+
+class _FightPageState extends State<FightPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

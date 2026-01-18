@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 
 // --- PAGE DÉTAIL EXERCICE (MUSCULATION) ---
-class ExercisePage extends StatelessWidget {
+class ExercisePage extends StatefulWidget {
   final String exerciseTitle;
   final String category;
   final String description;
-
 
   const ExercisePage({
     super.key,
@@ -15,7 +14,11 @@ class ExercisePage extends StatelessWidget {
     required this.description,
   });
 
+  @override
+  State<ExercisePage> createState() => _ExercisePageState();
+}
 
+class _ExercisePageState extends State<ExercisePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +65,7 @@ class ExercisePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          exerciseTitle,
+                          widget.exerciseTitle,
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -71,7 +74,7 @@ class ExercisePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          category,
+                          widget.category,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey[600],
@@ -96,7 +99,7 @@ class ExercisePage extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                description,
+                widget.description,
                 style: TextStyle(
                   fontSize: 13,
                   color: Colors.grey[700],

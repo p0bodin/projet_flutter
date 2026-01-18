@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'sports_page.dart';
 import 'exercise_detail_page.dart';
 import '../services/activities_storage.dart';
+import '../services/quests_service.dart';
 
 // --- TRAINING PAGE ---
 class TrainingPage extends StatefulWidget {
@@ -14,11 +15,13 @@ class TrainingPage extends StatefulWidget {
 class _TrainingPageState extends State<TrainingPage> {
   String _selectedTab = "Upper body";
   List<Map<String, dynamic>> _activities = [];
+  List<Map<String, dynamic>> _questHistory = [];
 
   @override
   void initState() {
     super.initState();
     _loadActivities();
+    _loadQuestHistory();
   }
 
   Future<void> _loadActivities() async {
@@ -28,10 +31,19 @@ class _TrainingPageState extends State<TrainingPage> {
     });
   }
 
+  Future<void> _loadQuestHistory() async {
+    final quests = await QuestsService.getQuestHistory();
+    setState(() {
+      _questHistory = quests;
+    });
+  }
+
   Future<void> _clearHistory() async {
     await ActivityStorage.clearActivities();
+    await QuestsService.clearQuestHistory();
     setState(() {
       _activities = [];
+      _questHistory = [];
     });
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -144,7 +156,9 @@ class _TrainingPageState extends State<TrainingPage> {
   }
 
   Widget _buildHistoricView() {
-    return _activities.isEmpty
+    final hasContent = _activities.isNotEmpty || _questHistory.isNotEmpty;
+    
+    return !hasContent
         ? Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -206,15 +220,56 @@ class _TrainingPageState extends State<TrainingPage> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      ..._activities.map((activity) => _buildActivityCard(
-                        date: activity['date'],
-                        exercise: activity['exercise'],
-                        series: activity['series'],
-                        reps: activity['reps'],
-                        rest: activity['rest'],
-                        intensity: activity['intensity'],
-                        trainingTime: activity['trainingTime'],
-                      )),
+                      
+                      // Quêtes complétées
+                      if (_questHistory.isNotEmpty) ...[
+                        const Text(
+                          "Completed Quests",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                        ),
+                        const SizedBox(height: 8),
+                        ..._questHistory.map((quest) => Card(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          color: Colors.green[100],
+                          child: ListTile(
+                            leading: const Icon(Icons.check_circle, color: Colors.green),
+                            title: Text(
+                              quest['title'] ?? 'Quest',
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(quest['description'] ?? ''),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Completed: ${quest['completedAt'] ?? ''}',
+                                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )),
+                        const SizedBox(height: 16),
+                      ],
+                      
+                      // Exercices complétés
+                      if (_activities.isNotEmpty) ...[
+                        const Text(
+                          "Completed Exercises",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
+                        ),
+                        const SizedBox(height: 8),
+                        ..._activities.map((activity) => _buildActivityCard(
+                          date: activity['date'],
+                          exercise: activity['exercise'],
+                          series: activity['series'],
+                          reps: activity['reps'],
+                          rest: activity['rest'],
+                          intensity: activity['intensity'],
+                          trainingTime: activity['trainingTime'],
+                        )),
+                      ],
                     ],
                   ),
                 ),
